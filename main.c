@@ -5,7 +5,7 @@
 */
 #include <windows.h>
 #include <stdio.h>
-#include "ResourceControl.h"
+#include "ResourceEditor.h"
 
 int main() {
 
