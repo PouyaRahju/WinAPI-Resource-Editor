@@ -43,6 +43,10 @@ ReadSelfResource("output.png", "RESOURCE_NAME");
 ```
 ResourceExists("myapp.exe", "RESOURCE_NAME", RT_RCDATA);
 ```
+or
+```
+ResourceSelfExists("RESOURCE_NAME", RT_RCDATA);
+```
 
 
 License:
