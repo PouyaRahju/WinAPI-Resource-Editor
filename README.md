@@ -1,4 +1,4 @@
-# WinAPI-Resource-Editor
+# WinAPI Resource Editor
  This project provides a set of functions for adding, reading, and verifying resources, making it easier to manipulate and manage custom data embedded in Windows executable files.
 
 # Key Features:
@@ -15,15 +15,17 @@
 - Self-Resource Handling: Special functions to manage and access resources embedded within the same executable file running the code.
 
 
-# :: Usage Examples
+# Usage Examples
 
 - Adding a Text Resource
-```AddTextResource("myapp.exe", "Sample Text", "RESOURCE_NAME");```
+```
+AddTextResource("myapp.exe", "Sample Text", "RESOURCE_NAME");
+```
 
 - Reading a Text Resource
 ```
 char output[256];
-memset(outputf,'\0',sizeof(output));
+memset(output,'\0',sizeof(output));
 ReadSelfResourceText("RESOURCE_NAME", output, sizeof(output));
 ```
 
