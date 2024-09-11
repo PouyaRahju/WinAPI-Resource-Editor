@@ -39,6 +39,11 @@ AddResource("myapp.exe", "image.png", "RESOURCE_NAME");
 ReadSelfResource("output.png", "RESOURCE_NAME");
 ```
 
+- Read data from current executable resource, Then add resource to target file.
+```
+ReadSelfThenAdd("RESOURCE_NAME", "target.exe");
+```
+
 - Checking Resource Existence
 ```
 ResourceExists("myapp.exe", "RESOURCE_NAME", RT_RCDATA);
@@ -48,6 +53,12 @@ or
 ResourceSelfExists("RESOURCE_NAME", RT_RCDATA);
 ```
 
+- Generate Random String
+```
+int length = 10;
+char randomString[length]; 
+generateRandomString(randomString,length+1); // Generate 10 random characters.
+```
 
 License:
 
