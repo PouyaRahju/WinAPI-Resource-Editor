@@ -43,16 +43,15 @@ void PrintDebug(LPCSTR msg)
 
 // Generate Random String
 void generateRandomString(char *str, size_t length) {
-    length--;
+    length--; // For null terminator in last index
     srand(time(0));
     const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    size_t charsetSize = sizeof(charset) - 1; // -1 برای حذف null terminator
-
+    size_t charsetSize = sizeof(charset) - 1; 
     for (size_t i = 0; i < length; i++) {
         int randomIndex = rand() % charsetSize;
         str[i] = charset[randomIndex];
     }
-    str[length] = '\0'; // افزودن null terminator به انتهای رشته
+    str[length] = '\0'; 
 }
 
 
