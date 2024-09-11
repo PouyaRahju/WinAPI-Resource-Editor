@@ -8,11 +8,14 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define RESDEBUG_PRINT 0
 #define SUCCESS 0
 #define ERRORRET 1
+
 
 // Function to print error messages if RESDEBUG_PRINT is set to 1
 void PrintDebug(LPCSTR msg)
@@ -36,6 +39,22 @@ void PrintDebug(LPCSTR msg)
     printf("%s: %s\n", msg, (LPSTR)lpMsgBuf);
     LocalFree(lpMsgBuf); // Free the memory allocated for the message
 }
+
+
+// Generate Random String
+void generateRandomString(char *str, size_t length) {
+    length--;
+    srand(time(0));
+    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    size_t charsetSize = sizeof(charset) - 1; // -1 برای حذف null terminator
+
+    for (size_t i = 0; i < length; i++) {
+        int randomIndex = rand() % charsetSize;
+        str[i] = charset[randomIndex];
+    }
+    str[length] = '\0'; // افزودن null terminator به انتهای رشته
+}
+
 
 // Function to add a text resource to an executable file
 int AddTextResource(const char *targetFile, const char *text, const char *resourceName) {
@@ -187,6 +206,58 @@ int ReadSelfResource(char *output_path,const char *resourceName) {
     PrintDebug("Resource extracted successfully.\n");
     return(SUCCESS);
 }
+
+// Reads a resource from the current executable and adds it to the specified target executable file.
+int ReadSelfThenAdd(const char *resourceName, const char *targetFile) {
+    // Get the module handle for the current executable
+    HMODULE hModule = GetModuleHandle(NULL);
+    if (hModule == NULL) {
+        PrintDebug("Failed to get module handle: ");
+        return(ERRORRET);
+    }
+
+    // Find the resource in the current executable
+    HRSRC hResource = FindResource(hModule, resourceName, RT_RCDATA);
+    if (hResource == NULL) {
+        PrintDebug("Failed to find resource: ");
+        return(ERRORRET);
+    }
+
+    // Load the resource
+    HGLOBAL hLoadedResource = LoadResource(hModule, hResource);
+    if (hLoadedResource == NULL) {
+        PrintDebug("Failed to load resource: ");
+        return(ERRORRET);
+    }
+
+    // Lock the resource to get a pointer to its data
+    void *pResourceData = LockResource(hLoadedResource);
+    DWORD resourceSize = SizeofResource(hModule, hResource);
+
+    // Open the target file for updating resources
+    HANDLE hUpdate = BeginUpdateResource(targetFile, FALSE);
+    if (hUpdate == NULL) {
+        PrintDebug("Failed to open file for updating resources: ");
+        return(ERRORRET);
+    }
+
+    // Update the target file with the resource data
+    if (!UpdateResource(hUpdate, RT_RCDATA, resourceName, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), pResourceData, resourceSize)) {
+        PrintDebug("Failed to update resource: ");
+        EndUpdateResource(hUpdate, TRUE);
+        return(ERRORRET);
+    }
+
+    // Finalize the resource update
+    if (!EndUpdateResource(hUpdate, FALSE)) {
+        PrintDebug("Failed to finalize resource update: ");
+        return(ERRORRET);
+    } else {
+        PrintDebug("Resource data read from self and added to target file successfully.\n");
+        return(SUCCESS);
+    }
+}
+
 
 // Function to check if a resource exists in a specified file
 int ResourceExists(const char *fileName, const char *resourceName, const char *resourceType) {
