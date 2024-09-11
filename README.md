@@ -57,7 +57,7 @@ ResourceSelfExists("RESOURCE_NAME", RT_RCDATA);
 ```
 int length = 10;
 char randomString[length]; 
-generateRandomString(randomString,length+1); // Generate 10 random characters.
+generateRandomString(randomString,length); // Generate 9 random characters.
 ```
 
 License:
