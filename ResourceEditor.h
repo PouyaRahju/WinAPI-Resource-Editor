@@ -108,11 +108,9 @@ int ReadSelfResourceText(const char *resourceName, char *output, size_t output_C
     DWORD resourceSize = SizeofResource(hModule, hResource);
 
     if (pResourceData != NULL && resourceSize > 0) {
+        // Check buffer size
+        (resourceSize < output_Count) ? output_Count = resourceSize : output_Count--;
         // Copy the resource data to the output buffer
-        if (resourceSize < output_Count)
-            output_Count = resourceSize;
-        else
-            output_Count--; // For NULL Char at END
         strncpy(output, pResourceData , output_Count );
         return(SUCCESS);
     } else {
