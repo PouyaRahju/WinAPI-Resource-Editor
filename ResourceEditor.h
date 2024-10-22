@@ -109,8 +109,8 @@ int ReadSelfResourceText(const char *resourceName, char *output, size_t output_C
 
     if (pResourceData != NULL && resourceSize > 0) {
         // Copy the resource data to the output buffer
-        if (resourceSize < output_Count)
-            output_Count = resourceSize;
+        if (resourceSize <= output_Count)
+            output_Count = resourceSize-1;
         strncpy(output, pResourceData , output_Count );
         return(SUCCESS);
     } else {
