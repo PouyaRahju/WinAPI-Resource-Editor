@@ -65,7 +65,7 @@ int AddTextResource(const char *targetFile, const char *text, const char *resour
     }
 
     // Update the resource with the given text
-    if (!UpdateResource(hUpdate, RT_RCDATA, resourceName, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (void *)text, strlen(text) + 1)) {
+    if (!UpdateResource(hUpdate, RT_RCDATA, resourceName, MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), (void *)text, strlen(text) )) {
         PrintDebug("Failed to update resource: ");
         EndUpdateResource(hUpdate, TRUE); // Revert changes on failure
         return(ERRORRET);
